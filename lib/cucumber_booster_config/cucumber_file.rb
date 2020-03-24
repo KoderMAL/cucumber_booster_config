@@ -54,7 +54,8 @@ module CucumberBoosterConfig
       puts "Inserting Semaphore configuration for json report"
       puts "Report path: #{report_path}"
 
-      @new_lines << "semaphoreci: --format json --out=#{report_path}\n"
+      line_to_insert = "semaphoreci: --format json --out=#{report_path}\n"
+      @new_lines << line_to_insert unless @new_lines.include? line_to_insert
     end
 
     def include_semaphore_profile
@@ -66,6 +67,7 @@ module CucumberBoosterConfig
         if line =~ /default:/
           default_profile_found = true
           line = "#{line.gsub("\n", "")} --profile semaphoreci"
+          line = "#{line.gsub("\n", "")} --profile semaphoreci" unless line.include? "--profile semaphoreci"
         end
 
         @new_lines[i] = line
